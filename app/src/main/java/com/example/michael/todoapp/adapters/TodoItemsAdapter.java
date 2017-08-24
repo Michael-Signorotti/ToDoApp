@@ -1,4 +1,4 @@
-package com.example.michael.todoapp;
+package com.example.michael.todoapp.adapters;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.michael.todoapp.R;
+import com.example.michael.todoapp.models.Task;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +21,7 @@ import java.util.Locale;
  * This class is based of a tutorial located at the following link.
  * http://guides.codepath.com/android/Using-a-BaseAdapter-with-ListView#optimization-using-the-viewholder-pattern
  */
-public class CustomListAdapter extends BaseAdapter {
+public class TodoItemsAdapter extends BaseAdapter {
 
     //the application context
     private Context context;
@@ -27,16 +30,18 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      * The class constructor.
-     * @param context:  The application context.
-     * @param items: The data source for the adapter.
+     *
+     * @param context: The application context.
+     * @param items:   The data source for the adapter.
      */
-    public CustomListAdapter(Context context, ArrayList<Task> items) {
+    public TodoItemsAdapter(Context context, ArrayList<Task> items) {
         this.context = context;
         this.items = items;
     }
 
     /**
      * A required method to override which returns the number of tasks.
+     *
      * @return
      */
     @Override
@@ -46,7 +51,8 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      * A required method to override which returns a task.
-     * @param position:  The position in the data source.
+     *
+     * @param position: The position in the data source.
      * @return: A task.
      */
     @Override
@@ -56,21 +62,22 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      * A required method which returns the position of an item.
+     *
      * @param position: The position of an item.
      * @return: The position.
      */
     @Override
     public long getItemId(int position) {
-
         return position;
     }
 
     /**
      * A required method that creates an updated view.
-     * @param position: The position of the task to display.
+     *
+     * @param position:    The position of the task to display.
      * @param convertView: A recycled view.
      * @param parent
-     * @return:  An updated view.
+     * @return: An updated view.
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -97,7 +104,7 @@ public class CustomListAdapter extends BaseAdapter {
         if (progress < 34) {
             textViewItemPriority.setText(R.string.low);
             textViewItemPriority.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
-        } else if (progress < 67 && progress >=34) {
+        } else if (progress < 67 && progress >= 34) {
             textViewItemPriority.setText(R.string.medium);
             textViewItemPriority.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         } else {
@@ -105,29 +112,35 @@ public class CustomListAdapter extends BaseAdapter {
             textViewItemPriority.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         }
 
-        Date date = null;
-        try {
-            String stringDate = currentItem.getDate();
-            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
-            date = sdf.parse(stringDate);
+        if (currentItem.isStatus() != 1) {
 
-        } catch(ParseException e) {
-            System.out.println(e.toString());
-        }
-        int numDaysLeft = daysBetween(new Date(), date);
+            Date date = null;
+            try {
+                String stringDate = currentItem.getDate();
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+                date = sdf.parse(stringDate);
 
-        if (numDaysLeft < 0) {
-            numDaysLeft = 0;
-        }
-        String daysLeft = numDaysLeft + " Days";
-        textViewItemDaysLeft.setText(daysLeft);
+            } catch (ParseException e) {
+                System.out.println(e.toString());
+            }
+            int numDaysLeft = daysBetween(new Date(), date);
 
-        if (numDaysLeft == 0) {
-            textViewItemDaysLeft.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
-        } else if (numDaysLeft > 0 && numDaysLeft < 4) {
-            textViewItemDaysLeft.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+            if (numDaysLeft < 0) {
+                numDaysLeft = 0;
+            }
+            String daysLeft = numDaysLeft + " Days";
+            textViewItemDaysLeft.setText(daysLeft);
+
+            if (numDaysLeft == 0) {
+                textViewItemDaysLeft.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            } else if (numDaysLeft > 0 && numDaysLeft < 4) {
+                textViewItemDaysLeft.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+            } else {
+                textViewItemDaysLeft.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            }
         } else {
-            textViewItemDaysLeft.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            textViewItemDaysLeft.setText("Complete");
+            textViewItemDaysLeft.setTextColor(ContextCompat.getColor(context, R.color.complete));
         }
 
         // returns the view for the current row
@@ -136,14 +149,15 @@ public class CustomListAdapter extends BaseAdapter {
 
     /**
      * This method calculated the number of days between two dates.
+     *
      * @param d1: The current date.
      * @param d2: A due date.
      * @return
      */
-    public int daysBetween(Date d1, Date d2){
+    public int daysBetween(Date d1, Date d2) {
         long diff = d2.getTime() - d1.getTime();
         //need to convert to days because diff is in terms of milliseconds.
-        int days = (int)(diff)/(1000 * 60 * 60 * 24);
+        int days = (int) (diff) / (1000 * 60 * 60 * 24);
         return days;
     }
 }

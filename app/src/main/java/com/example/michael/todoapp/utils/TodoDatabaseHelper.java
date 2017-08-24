@@ -1,4 +1,4 @@
-package com.example.michael.todoapp;
+package com.example.michael.todoapp.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.michael.todoapp.models.Task;
+
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
@@ -14,7 +16,7 @@ import static android.content.ContentValues.TAG;
 /**
  * This class contains methods for updating the SQLite database.
  */
-public class TaskDatabaseHelper extends SQLiteOpenHelper {
+public class TodoDatabaseHelper extends SQLiteOpenHelper {
     // Database Info
     private static final String DATABASE_NAME = "taskDatabase";
     private static final int DATABASE_VERSION = 1;
@@ -31,18 +33,19 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_TASK_STATUS = "status";
 
 
-    private static TaskDatabaseHelper sInstance;
+    private static TodoDatabaseHelper sInstance;
 
     /**
      * Use the application context, which will ensure that you don't accidentally
      * leak an Activity's context.
      * See this article for more information: http://bit.ly/6LRzfx
+     *
      * @param context
      * @return
      */
-    public static synchronized TaskDatabaseHelper getInstance(Context context) {
+    public static synchronized TodoDatabaseHelper getInstance(Context context) {
         if (sInstance == null) {
-            sInstance = new TaskDatabaseHelper(context.getApplicationContext());
+            sInstance = new TodoDatabaseHelper(context.getApplicationContext());
         }
         return sInstance;
     }
@@ -51,13 +54,14 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
      * Constructor should be private to prevent direct instantiation.
      * Make a call to the static method "getInstance()" instead.
      */
-    private TaskDatabaseHelper(Context context) {
+    private TodoDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /**
      * Called when the database connection is being configured.
      * Configure database settings for things like foreign key support, write-ahead logging, etc.
+     *
      * @param db
      */
     @Override
@@ -69,11 +73,12 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
     /**
      * Called when the database is created for the FIRST time.
      * If a database already exists on disk with the same DATABASE_NAME, this method will NOT be called.
+     *
      * @param db
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS +
+        String createTasksTable = "CREATE TABLE " + TABLE_TASKS +
                 "(" +
                 KEY_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 KEY_TASK_TITLE + " TEXT," +
@@ -83,13 +88,14 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
                 KEY_TASK_STATUS + " INTEGER" +
                 ")";
 
-        db.execSQL(CREATE_TASKS_TABLE);
+        db.execSQL(createTasksTable);
     }
 
     /**
      * Called when the database needs to be upgraded.
      * This method will only be called if a database already exists on disk with the same DATABASE_NAME,
      * but the DATABASE_VERSION is different than the version of the database that exists on disk.
+     *
      * @param db
      * @param oldVersion
      * @param newVersion
@@ -106,6 +112,7 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * This method adds a task to the database.
+     *
      * @param task
      * @return
      */
@@ -138,6 +145,7 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * This method deletes a task from the database.
+     *
      * @param task
      */
     public void deleteTask(Task task) {
@@ -148,9 +156,9 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
         db.beginTransaction();
 
         try {
-            String DELETE_TASK_RECORD = "DELETE FROM " + TABLE_TASKS + " WHERE " +
+            String deleteTaskRecord = "DELETE FROM " + TABLE_TASKS + " WHERE " +
                     KEY_TASK_ID + " = " + task.getId();
-            db.execSQL(DELETE_TASK_RECORD);
+            db.execSQL(deleteTaskRecord);
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(TAG, "Error deleting from the database");
@@ -163,6 +171,7 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * This method updates a task in the database.
+     *
      * @param task
      */
     public void updateTask(Task task) {
@@ -192,6 +201,7 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * This method marks a task as completed in the database.
+     *
      * @param task
      */
     public void markTaskCompleted(Task task) {
@@ -218,17 +228,46 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
 
 
     /**
+     * This method marks a task as not completed in the database.
+     *
+     * @param task
+     */
+    public void markTaskNotCompleted(Task task) {
+        // Create and/or open the database for writing
+        SQLiteDatabase db = getWritableDatabase();
+        // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
+        // consistency of the database.
+        db.beginTransaction();
+        try {
+            String UPDATE_TASK_RECORD = "UPDATE " + TABLE_TASKS +
+                    " SET " +
+                    KEY_TASK_STATUS + " = 0" +
+                    " WHERE " +
+                    KEY_TASK_ID + "=" + task.getId();
+            db.execSQL(UPDATE_TASK_RECORD);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d(TAG, "Error updating the status as not completed");
+            Log.d(TAG, e.getMessage());
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+
+    /**
      * This method gets all tasks from the database that are not yet completed.
+     *
      * @return
      */
     public ArrayList<Task> getAllTasks() {
         ArrayList<Task> tasks = new ArrayList<Task>();
         SQLiteDatabase db = getReadableDatabase();
 
-        String TASKS_SELECT_QUERY = "SELECT * FROM " + TABLE_TASKS + " WHERE " + KEY_TASK_STATUS + " != 1";
+        String tasksSelectQuery = "SELECT * FROM " + TABLE_TASKS + " WHERE " + KEY_TASK_STATUS + " != 1";
 
 
-        Cursor cursor = db.rawQuery(TASKS_SELECT_QUERY, null);
+        Cursor cursor = db.rawQuery(tasksSelectQuery, null);
         try {
             if (cursor.moveToFirst()) {
                 do {
@@ -241,10 +280,47 @@ public class TaskDatabaseHelper extends SQLiteOpenHelper {
 
                     Task task = new Task(id, title, description, priority, date, status);
                     tasks.add(task);
-                } while(cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
         } catch (Exception e) {
             Log.d(TAG, "Error getting list of all tasks from the database");
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return tasks;
+    }
+
+    /**
+     * This method gets all completed tasks from the database.
+     *
+     * @return
+     */
+    public ArrayList<Task> getAllCompletedTasks() {
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        SQLiteDatabase db = getReadableDatabase();
+
+        String tasksSelectQuery = "SELECT * FROM " + TABLE_TASKS + " WHERE " + KEY_TASK_STATUS + " = 1";
+
+
+        Cursor cursor = db.rawQuery(tasksSelectQuery, null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    int id = cursor.getInt(cursor.getColumnIndex(KEY_TASK_ID));
+                    String title = cursor.getString(cursor.getColumnIndex(KEY_TASK_TITLE));
+                    String description = cursor.getString(cursor.getColumnIndex(KEY_TASK_DESCRIPTION));
+                    String date = cursor.getString(cursor.getColumnIndex(KEY_TASK_DATE));
+                    int priority = cursor.getInt(cursor.getColumnIndex(KEY_TASK_PRIORITY));
+                    int status = cursor.getInt(cursor.getColumnIndex(KEY_TASK_STATUS));
+
+                    Task task = new Task(id, title, description, priority, date, status);
+                    tasks.add(task);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Error getting list of all completed tasks from the database");
         } finally {
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();

@@ -3,18 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.michael.todoapp.EditItemActivity">
+    tools:context="com.example.michael.todoapp.activities.EditItemActivity">
 
     <EditText
-        android:id="@+id/etEditItem"
+        android:id="@+id/etTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="33dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="49dp"
+        android:layout_marginLeft="@dimen/activity_edit_item_et_title_side_margin"
+        android:layout_marginStart="@dimen/activity_edit_item_et_title_side_margin"
+        android:layout_marginTop="@dimen/activity_edit_item_et_title_top_margin"
         android:ems="10"
         android:hint="@string/hintEditTitle"
         android:inputType="textPersonName" />
@@ -23,50 +23,50 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etEditItem"
+        android:layout_alignLeft="@+id/etTitle"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/etEditItem"
-        android:layout_marginTop="15dp"
+        android:layout_alignStart="@+id/etTitle"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top"
         android:text="@string/hintEditTitle"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        tools:text="@string/editTitle" />
+        android:textSize="@dimen/tv_font_size"
+        tools:text="@string/title" />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_alignLeft="@+id/etTitle"
+        android:layout_alignStart="@+id/etTitle"
+        android:layout_below="@+id/etTitle"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top"
         android:text="@string/editDescription"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        android:layout_below="@+id/etEditItem"
-        android:layout_alignLeft="@+id/etEditItem"
-        android:layout_alignStart="@+id/etEditItem" />
+        android:textSize="@dimen/tv_font_size" />
 
     <EditText
         android:id="@+id/etDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_alignLeft="@+id/tvDescription"
+        android:layout_alignStart="@+id/tvDescription"
+        android:layout_below="@+id/tvDescription"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top"
         android:ems="10"
         android:hint="@string/hintEditDescription"
         android:inputType="textMultiLine"
-        android:lines="3"
-        android:layout_below="@+id/tvDescription"
-        android:layout_alignLeft="@+id/tvDescription"
-        android:layout_alignStart="@+id/tvDescription" />
+        android:lines="3" />
 
     <SeekBar
         android:id="@+id/sbPriority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/tvPriority"
+        android:layout_alignEnd="@+id/etDescription"
         android:layout_alignLeft="@+id/etDescription"
-        android:layout_alignStart="@+id/etDescription"
         android:layout_alignRight="@+id/etDescription"
-        android:layout_alignEnd="@+id/etDescription" />
+        android:layout_alignStart="@+id/etDescription"
+        android:layout_below="@+id/tvPriority"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top" />
 
     <TextView
         android:id="@+id/tvPriority"
@@ -75,11 +75,11 @@
         android:layout_alignLeft="@+id/sbPriority"
         android:layout_alignStart="@+id/sbPriority"
         android:layout_below="@+id/etDescription"
-        android:layout_marginTop="15dp"
-        android:text="@string/editPriority"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top"
+        android:text="@string/priority"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        tools:text="@string/editPriority" />
+        android:textSize="@dimen/tv_font_size"
+        tools:text="@string/priority" />
 
     <EditText
         android:id="@+id/etDate"
@@ -88,11 +88,11 @@
         android:layout_alignEnd="@+id/sbPriority"
         android:layout_alignRight="@+id/sbPriority"
         android:layout_below="@+id/sbPriority"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="@dimen/activity_edit_item_et_date_margin_top"
         android:ems="10"
-        android:onClick="showDatePickerDialog"
         android:focusable="false"
-        android:inputType="date" />
+        android:inputType="date"
+        android:onClick="showDatePickerDialog" />
 
     <TextView
         android:id="@+id/tvDate"
@@ -103,36 +103,36 @@
         android:layout_alignRight="@+id/tvPriority"
         android:layout_alignStart="@+id/etDate"
         android:layout_below="@+id/sbPriority"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top"
         android:text="@string/editDueDate"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp"
+        android:textSize="@dimen/tv_font_size"
         tools:text="@string/editDueDate" />
 
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_alignLeft="@+id/etDate"
+        android:layout_alignStart="@+id/etDate"
+        android:layout_below="@+id/etDate"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top"
         android:text="@string/editStatus"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        android:layout_below="@+id/etDate"
-        android:layout_alignLeft="@+id/etDate"
-        android:layout_alignStart="@+id/etDate" />
+        android:textSize="@dimen/tv_font_size" />
 
     <ToggleButton
         android:id="@+id/tbtnStatus"
-        android:background="@drawable/btn_toggle_status"
-        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tvStatus"
         android:layout_alignStart="@+id/tvStatus"
         android:layout_below="@+id/tvStatus"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/activity_edit_item_et_margin_top"
+        android:background="@drawable/btn_toggle_status"
         android:checked="false"
-        android:text="ToggleButton"
+        android:text="@string/toggleButton"
+        android:textColor="@android:color/white"
         android:textOff="@string/notDone"
         android:textOn="@string/done" />
 
@@ -140,27 +140,27 @@
         android:id="@+id/tvPriorityTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="18sp"
         android:layout_alignBaseline="@+id/tvPriority"
         android:layout_alignBottom="@+id/tvPriority"
-        android:layout_toRightOf="@+id/tvPriority"
+        android:layout_marginLeft="@dimen/activity_edit_item_tv_priority_tag_side_margin"
+        android:layout_marginStart="@dimen/activity_edit_item_tv_priority_tag_side_margin"
         android:layout_toEndOf="@+id/tvPriority"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp" />
+        android:layout_toRightOf="@+id/tvPriority"
+        android:text="@string/textView"
+        android:textSize="@dimen/tv_font_size" />
 
     <TextView
         android:id="@+id/tvPriorityScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="104dp"
-        android:layout_marginStart="104dp"
-        android:layout_toEndOf="@+id/tvPriority"
-        android:layout_toRightOf="@+id/tvPriority"
         android:layout_alignBaseline="@+id/tvPriority"
         android:layout_alignBottom="@+id/tvPriority"
-        android:text="TextView"
-        android:textSize="18sp" />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/activity_edit_item_tv_priority_score_side_margin"
+        android:layout_marginStart="@dimen/activity_edit_item_tv_priority_score_side_margin"
+        android:layout_toEndOf="@+id/tvPriority"
+        android:layout_toRightOf="@+id/tvPriority"
+        android:text="@string/textView"
+        android:textSize="@dimen/tv_font_size" />
 
 </android.widget.RelativeLayout>

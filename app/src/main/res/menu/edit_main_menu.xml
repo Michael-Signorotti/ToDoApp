@@ -2,18 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/miCancel"
-        android:onClick="onCancel"
-        android:icon="@mipmap/ic_cancel"
-        app:showAsAction="ifRoom"
-        android:title="Compose">
-    </item>
+        android:id="@+id/icCancel"
+        android:icon="@drawable/ic_cancel"
+        android:title="@string/compose"
+        app:showAsAction="ifRoom"></item>
     <item
-        android:id="@+id/miSave"
-        android:onClick="onSave"
-        android:icon="@mipmap/ic_save"
-        app:showAsAction="ifRoom"
-        android:title="Compose">
-    </item>
+        android:id="@+id/icSave"
+        android:icon="@drawable/ic_save"
+        android:title="@string/compose"
+        app:showAsAction="ifRoom"></item>
 
 </menu>

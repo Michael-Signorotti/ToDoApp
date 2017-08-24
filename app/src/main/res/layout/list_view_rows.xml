@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.michael.todoapp.EditItemActivity">
+    tools:context="com.example.michael.todoapp.activities.EditItemActivity">
 
 
     <TextView
@@ -13,12 +13,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="33dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="Title"
-        android:textSize="18sp" />
+        android:layout_marginBottom="@dimen/list_view_rows_tv_title_margin_top_bottom"
+        android:layout_marginLeft="@dimen/list_view_rows_tv_title_margin_side"
+        android:layout_marginStart="@dimen/list_view_rows_tv_title_margin_side"
+        android:layout_marginTop="@dimen/list_view_rows_tv_title_margin_top_bottom"
+        android:text="@string/title"
+        android:textSize="@dimen/tv_font_size" />
 
     <TextView
         android:id="@+id/tvDaysLeft"
@@ -28,21 +28,21 @@
         android:layout_alignBottom="@+id/tvTitle"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginEnd="25dp"
-        android:layout_marginRight="25dp"
-        android:text="Days"
-        android:textSize="18sp" />
+        android:layout_marginEnd="@dimen/list_view_rows_tv_daysLeft_margin"
+        android:layout_marginRight="@dimen/list_view_rows_tv_daysLeft_margin"
+        android:text="@string/days"
+        android:textSize="@dimen/tv_font_size" />
 
     <TextView
         android:id="@+id/tvPriority"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:text="Priority"
-        android:textSize="18sp"
         android:layout_alignBaseline="@+id/tvDaysLeft"
         android:layout_alignBottom="@+id/tvDaysLeft"
+        android:layout_marginEnd="@dimen/list_view_rows_tv_priority_margin"
+        android:layout_marginRight="@dimen/list_view_rows_tv_priority_margin"
         android:layout_toLeftOf="@+id/tvDaysLeft"
-        android:layout_toStartOf="@+id/tvDaysLeft" />
+        android:layout_toStartOf="@+id/tvDaysLeft"
+        android:text="@string/priority"
+        android:textSize="@dimen/tv_font_size" />
 </android.widget.RelativeLayout>

@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Remind Me</string>
     <string name="add">Add</string>
-    <string name="editTitle">Title</string>
+    <string name="title">Title</string>
     <string name="editDescription">Description</string>
     <string name="editDueDate">Date</string>
-    <string name="editPriority">Priority</string>
+    <string name="priority">Priority</string>
     <string name="editStatus">Status</string>
     <string name="hintEditTitle">Edit Title</string>
     <string name="hintEditDescription">Edit Description</string>
@@ -15,4 +15,12 @@
     <string name="low">Low</string>
     <string name="medium">Medium</string>
     <string name="high">High</string>
+    <string name="compose">Compose</string>
+    <string name="toggleButton">ToggleButton</string>
+    <string name="textView">TextView</string>
+    <string name="days">Days</string>
+    <string name="sortHighToLow">Sort High to Low</string>
+    <string name="sortLowToHigh">Sort Low to High</string>
+    <string name="showCompletedTasks">Show Completed Tasks</string>
+    <string name="restoreDefaultSettings">Restore Current Tasks</string>
 </resources>

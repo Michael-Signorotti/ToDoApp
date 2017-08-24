@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/miAdd"
+        android:id="@+id/icAdd"
         android:icon="@drawable/ic_add"
         android:orderInCategory="5"
-        app:showAsAction="always|collapseActionView"
+        android:title="@string/compose"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        android:title="Compose">
+        app:showAsAction="always|collapseActionView" />
+    <item
+        android:id="@+id/icSort"
+        android:icon="@drawable/ic_sort"
+        android:title="@string/compose"
+        app:showAsAction="always|collapseActionView">
+        <menu>
+            <item
+                android:id="@+id/sortLowToHigh"
+                android:title="@string/sortLowToHigh" />
+            <item
+                android:id="@+id/sortHighToLow"
+                android:title="@string/sortHighToLow" />
+            <item
+                android:id="@+id/showCompleted"
+                android:title="@string/showCompletedTasks" />
+            <item
+                android:id="@+id/restoreDefault"
+                android:title="@string/restoreDefaultSettings" />
+
+        </menu>
     </item>
+
 </menu>

@@ -27,6 +27,13 @@ The following **additional** features are implemented:
 
 * [x] Utilized SearchView for improving task submission
 * [x] Incorporated customized action bar features
+* [x] Customized launcher icon
+* [x] Added the ability to sort items by priority
+* [x] Added a DialogFragment for confirming the deletion of items
+* [x] Added the ability to query completed tasks
+* [x] Added the ability to made edits to completed tasks and restore them to the todo list
+
+
 
 
 
@@ -34,7 +41,15 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+Version 1
+
 <img src='http://i.imgur.com/UArwNEd.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+Version 2
+
+<img src='http://i.imgur.com/vzcwurU.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+<img src='http://i.imgur.com/vIyeoDv.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

@@ -1,7 +1,6 @@
-package com.example.michael.todoapp;
+package com.example.michael.todoapp.models;
 
 import java.io.Serializable;
-
 
 
 public class Task implements Serializable {
@@ -20,6 +19,7 @@ public class Task implements Serializable {
 
     /**
      * The task constructor.
+     *
      * @param id
      * @param title
      * @param description
@@ -38,6 +38,7 @@ public class Task implements Serializable {
 
     /**
      * Returns the task id.
+     *
      * @return
      */
     public long getId() {
@@ -46,6 +47,7 @@ public class Task implements Serializable {
 
     /**
      * Returns the task title.
+     *
      * @return
      */
     public String getTitle() {
@@ -55,6 +57,7 @@ public class Task implements Serializable {
 
     /**
      * Returns the task description.
+     *
      * @return
      */
     public String getDescription() {
@@ -64,6 +67,7 @@ public class Task implements Serializable {
 
     /**
      * Returns the task priority.
+     *
      * @return
      */
     public int getPriority() {
@@ -73,6 +77,7 @@ public class Task implements Serializable {
 
     /**
      * Returns the task date.
+     *
      * @return
      */
     public String getDate() {
@@ -82,6 +87,7 @@ public class Task implements Serializable {
 
     /**
      * Returns the task status.
+     *
      * @return
      */
     public int isStatus() {
@@ -91,6 +97,7 @@ public class Task implements Serializable {
 
     /**
      * Sets the task id.
+     *
      * @param id
      */
     public void setId(long id) {

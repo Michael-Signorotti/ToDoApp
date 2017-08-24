@@ -1,4 +1,4 @@
-package com.example.michael.todoapp;
+package com.example.michael.todoapp.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -15,6 +15,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.michael.todoapp.R;
+import com.example.michael.todoapp.fragments.DatePickerFragment;
+import com.example.michael.todoapp.models.Task;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -25,25 +29,22 @@ import java.util.Calendar;
 public class EditItemActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
 
-    private EditText etEditItem;
-    private TextView tvTitle;
-    private TextView tvDescription;
+    private EditText etTitle;
     private EditText etDescription;
     private SeekBar sbPriority;
-    private TextView tvPriority;
     private EditText etDate;
-    private TextView tvDate;
-    private TextView tvStatus;
     private ToggleButton tbtnStatus;
     private TextView tvPriorityTag;
     private TextView tvPriorityScore;
     private int position;
+    private boolean showingCompleted;
     private final int RESULT_OK = 1;
     private final int RESULT_CANCELED = -1;
     private long id = -1;
 
     /**
      * A required method that is called when the edit item activity is opened by a user.
+     *
      * @param savedInstanceState
      */
     @Override
@@ -52,15 +53,10 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
         setContentView(R.layout.activity_edit_item);
         getSupportActionBar().setTitle("Edit Item");
 
-        etEditItem = (EditText) findViewById(R.id.etEditItem);
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvDescription = (TextView) findViewById(R.id.tvDescription);
+        etTitle = (EditText) findViewById(R.id.etTitle);
         etDescription = (EditText) findViewById(R.id.etDescription);
         sbPriority = (SeekBar) findViewById(R.id.sbPriority);
-        tvPriority = (TextView) findViewById(R.id.tvPriority);
         etDate = (EditText) findViewById(R.id.etDate);
-        tvDate = (TextView) findViewById(R.id.tvDate);
-        tvStatus = (TextView) findViewById(R.id.tvStatus);
         tbtnStatus = (ToggleButton) findViewById(R.id.tbtnStatus);
         tvPriorityTag = (TextView) findViewById(R.id.tvPriorityTag);
         tvPriorityScore = (TextView) findViewById(R.id.tvPriorityScore);
@@ -68,10 +64,11 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
         //get information passed from the main activity
         Intent intent = getIntent();
         position = intent.getIntExtra("position", -1);
+        showingCompleted = intent.getBooleanExtra("showingCompleted", false);
 
         //check if editing an existing task or creating a new one
         if (position == -1) {
-            etEditItem.setText(intent.getStringExtra("title"));
+            etTitle.setText(intent.getStringExtra("title"));
         } else {
             Task t = (Task) intent.getSerializableExtra("task");
             String title = t.getTitle();
@@ -79,10 +76,11 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
             String date = t.getDate();
             int priority = t.getPriority();
             id = t.getId();
-            etEditItem.setText(title);
+            etTitle.setText(title);
             etDescription.setText(description);
             etDate.setText(date);
             sbPriority.setProgress(priority);
+            tbtnStatus.setChecked(t.isStatus() == 1);
         }
 
         position = intent.getIntExtra("position", -1);
@@ -153,6 +151,7 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
 
     /**
      * This method adds items to the action bar.
+     *
      * @param menu
      * @return
      */
@@ -163,12 +162,28 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
     }
 
     /**
-     * This method is called when a user presses the save button.
-     * @param mi
+     * This method handles click events for action bar items.
+     *
+     * @param item
+     * @return
      */
-    public void onSave(MenuItem mi) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.icSave) {
+            onSave();
+        } else if (id == R.id.icCancel) {
+            onCancel();
+        }
+        return true;
+    }
+
+    /**
+     * This method is called when a user presses the save button.
+     */
+    public void onSave() {
         Intent intent = new Intent();
-        String title = etEditItem.getText().toString();
+        String title = etTitle.getText().toString();
         String description = etDescription.getText().toString();
         String date = etDate.getText().toString();
         int priority = sbPriority.getProgress();
@@ -179,6 +194,7 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
         Task t = new Task(id, title, description, priority, date, status);
         intent.putExtra("task", t);
         intent.putExtra("position", position);
+        intent.putExtra("showingCompleted", showingCompleted);
         //set result code and bundle data for response
         setResult(RESULT_OK, intent);
         //closes the activity and passes data to the parent
@@ -187,9 +203,8 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
 
     /**
      * This method is called when a user cancels editing the item.
-     * @param mi
      */
-    public void onCancel(MenuItem mi) {
+    public void onCancel() {
         Intent intent = new Intent();
         //set the result code
         setResult(RESULT_CANCELED, intent);
@@ -200,6 +215,7 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
     /**
      * This method shows the DatePicker for selecting task due dates.
      * The method is called when a user presses on etDate.
+     *
      * @param v
      */
     public void showDatePickerDialog(View v) {
@@ -209,6 +225,7 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
 
     /**
      * A required method that contains logic for processing a date selected by a user in the DatePicker.
+     *
      * @param view
      * @param year
      * @param monthOfYear
@@ -224,29 +241,4 @@ public class EditItemActivity extends AppCompatActivity implements DatePickerDia
         etDate.setText(sdf.format(c.getTime()));
     }
 
-
-    /**
-     * Required for creating the DatePicker.
-     */
-    public static class DatePickerFragment extends DialogFragment {
-
-        /**
-         * This method contains logic for loading the DatePicker.
-         * @param savedInstanceState
-         * @return
-         */
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog.OnDateSetListener listener = (DatePickerDialog.OnDateSetListener) getActivity();
-            DatePickerDialog dpd = new DatePickerDialog(getActivity(), listener, year, month, day);
-            dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-            return dpd;
-        }
-    }
 }
